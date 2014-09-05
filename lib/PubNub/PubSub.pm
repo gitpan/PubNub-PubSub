@@ -2,12 +2,12 @@ package PubNub::PubSub;
 
 use strict;
 use 5.008_005;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Carp;
 use Mojo::IOLoop;
 use Socket qw/$CRLF/;
-use Mojo::JSON qw/decode_json/;
+use Mojo::JSON;
 use Mojo::UserAgent;
 
 sub new {
@@ -19,6 +19,7 @@ sub new {
     $args{timeout} ||= 60; # for ua timeout
     $args{subscribe_timeout} ||= 3600; # subcribe streaming timeout, default to 1 hours
     $args{debug} ||= $ENV{PUBNUB_DEBUG} || 0;
+    $args{json} ||= Mojo::JSON->new;
 
     return bless \%args, $class;
 }
@@ -210,7 +211,7 @@ sub parse_response {
     }
 
     if ($data{code} == 200 and $data{headers}->{'Content-Type'} =~ 'javascript') {
-        $data{json} = decode_json($body);
+        $data{json} = $self->{json}->decode($body);
     }
 
     return wantarray ? %data : \%data;
@@ -360,12 +361,31 @@ publish messages to channel
     $pubnub->publish({
         pub_key => 'demo',
         sub_key => 'demo',
-        messages => ['message1', 'message2'],
         channel => 'some_unique_channel_perhaps',
+        messages => ['message1', 'message2'],
         callback => sub {
-            my ($res) = @_;
+            my ($data) = @_;
 
-            # ... $res is raw HTTP Response (in bulk)
+            # sample $data
+            # {
+            #     'headers' => {
+            #                    'Connection' => 'keep-alive',
+            #                    'Content-Length' => 30,
+            #                    'Date' => 'Wed, 03 Sep 2014 13:31:39 GMT',
+            #                    'Cache-Control' => 'no-cache',
+            #                    'Access-Control-Allow-Methods' => 'GET',
+            #                    'Content-Type' => 'text/javascript; charset="UTF-8"',
+            #                    'Access-Control-Allow-Origin' => '*'
+            #                  },
+            #     'body' => '[1,"Sent","14097510998021530"]',
+            #     'json' => [
+            #                 1,
+            #                 'Sent',
+            #                 '14097510998021530'
+            #               ],
+            #     'code' => 200,
+            #     'proto' => 'HTTP/1.1'
+            # };
         }
     });
 
