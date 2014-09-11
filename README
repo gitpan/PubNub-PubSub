@@ -36,8 +36,13 @@ SYNOPSIS
         );
 
         # publish
-        $pubnub->publish('message1', 'message2');
-        $pubnub->publish('message3', 'message4');
+        $pubnub->publish({
+            messages => ['message1', 'message2']
+        });
+        $pubnub->publish({
+            channel  => 'sandbox2', # optional, if not applied, the one in ->new will be used.
+            messages => ['message3', 'message4']
+        });
 
         # subscribe
         $pubnub->subscribe({
@@ -69,15 +74,15 @@ METHOD
   new
     *   pub_key
 
-        optional, required only for publish
+        optional, default pub_key for publish
 
     *   sub_key
 
-        required.
+        optional, default sub_key for all methods
 
     *   channel
 
-        required.
+        optional, default channel for all methods
 
     *   publish_callback
 
@@ -113,8 +118,13 @@ METHOD
   publish
     publish messages to channel
 
-        $pubnub->publish('message1', 'message2');
-        $pubnub->publish('message3', 'message4');
+        $pubnub->publish({
+            messages => ['message1', 'message2']
+        });
+        $pubnub->publish({
+            channel  => 'sandbox2', # optional, if not applied, the one in ->new will be used.
+            messages => ['message3', 'message4']
+        });
 
     Note if you need callback, please pass it when do ->new with
     publish_callback.
