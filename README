@@ -5,15 +5,11 @@ NAME
 SYNOPSIS
         use PubNub::PubSub;
 
-        my $pubnub = PubNub::PubSub->new();
-
-        # publish
-        $pubnub->publish({
-            pub_key => 'demo',
+        my $pubnub = PubNub::PubSub->new(
+            pub_key => 'demo', # only required for publish
             sub_key => 'demo',
-            channel => 'some_unique_channel_perhaps',
-            messages => ['message1', 'message2'],
-            callback => sub {
+            channel => 'sandbox',
+            publish_callback => sub {
                 my ($data) = @_;
 
                 # sample $data
@@ -37,12 +33,14 @@ SYNOPSIS
                 #     'proto' => 'HTTP/1.1'
                 # };
             }
-        });
+        );
+
+        # publish
+        $pubnub->publish('message1', 'message2');
+        $pubnub->publish('message3', 'message4');
 
         # subscribe
         $pubnub->subscribe({
-            sub_key => 'demo',
-            channel => 'sandbox',
             callback => sub {
                 my (@messages) = @_;
                 foreach my $msg (@messages) {
@@ -69,6 +67,26 @@ DESCRIPTION
 
 METHOD
   new
+    *   pub_key
+
+        optional, required only for publish
+
+    *   sub_key
+
+        required.
+
+    *   channel
+
+        required.
+
+    *   publish_callback
+
+        optional. check every response on publish.
+
+    *   publish_timeout
+
+        publish stream timeout. default is 1 hour = 3600
+
     *   subscribe_timeout
 
         subscribe stream timeout. default is 1 hour = 3600
@@ -81,8 +99,6 @@ METHOD
     subscribe channel to listen for the messages.
 
         $pubnub->subscribe({
-            sub_key => 'demo',
-            channel => 'sandbox',
             callback => sub {
                 my (@messages) = @_;
                 foreach my $msg (@messages) {
@@ -97,48 +113,14 @@ METHOD
   publish
     publish messages to channel
 
-        $pubnub->publish({
-            pub_key => 'demo',
-            sub_key => 'demo',
-            channel => 'some_unique_channel_perhaps',
-            messages => ['message1', 'message2'],
-            callback => sub {
-                my ($data) = @_;
+        $pubnub->publish('message1', 'message2');
+        $pubnub->publish('message3', 'message4');
 
-                # sample $data
-                # {
-                #     'headers' => {
-                #                    'Connection' => 'keep-alive',
-                #                    'Content-Length' => 30,
-                #                    'Date' => 'Wed, 03 Sep 2014 13:31:39 GMT',
-                #                    'Cache-Control' => 'no-cache',
-                #                    'Access-Control-Allow-Methods' => 'GET',
-                #                    'Content-Type' => 'text/javascript; charset="UTF-8"',
-                #                    'Access-Control-Allow-Origin' => '*'
-                #                  },
-                #     'body' => '[1,"Sent","14097510998021530"]',
-                #     'json' => [
-                #                 1,
-                #                 'Sent',
-                #                 '14097510998021530'
-                #               ],
-                #     'code' => 200,
-                #     'proto' => 'HTTP/1.1'
-                # };
-            }
-        });
-
-    all messages will be sent in one socket request.
-
-    callback will get all original response text which means it may have two
-    or more response text in one read. it's not that useful at all.
+    Note if you need callback, please pass it when do ->new with
+    publish_callback.
 
   history
-        my $res = $pubnub->history({
-            sub_key => 'demo',
-            channel => 'sandbox',
-            total => 100
-        });
+        my $res = $pubnub->history(100);
 
     get latest history.
 
