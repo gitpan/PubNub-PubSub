@@ -28,6 +28,6 @@ resources:
   bugtracker: https://github.com/binary-com/perl-pubnub-pubsub/issues
   homepage: https://github.com/binary-com/perl-pubnub-pubsub
   repository: https://github.com/binary-com/perl-pubnub-pubsub.git
-version: 0.05
+version: 0.06
 x_contributors:
   - 'Jean-Yves Sireau <jy@binary.com>'
