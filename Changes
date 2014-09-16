@@ -1,5 +1,8 @@
 Revision history for PubNub-PubSub
 
+0.07  2014-09-16 21:24:39 CST
+        - all use LWP::UserAgent, publish callback API changes.
+
 0.06  2014-09-15 17:34:06 CST
         - rewrite history to support v2 http://www.pubnub.com/docs/javascript/api/reference.html#history
 

@@ -13,6 +13,5 @@ examples/publish.pl
 examples/publish_multi.pl
 examples/subscribe.pl
 lib/PubNub/PubSub.pm
-t/7.parse_response.t
 t/basic.t
 t/release-pod-syntax.t
