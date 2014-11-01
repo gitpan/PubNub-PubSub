@@ -73,7 +73,7 @@ METHOD
 
     *   debug
 
-        print network outgoing/incoming messages to STDERR
+        set ENV MOJO_USERAGENT_DEBUG to debug
 
   subscribe
     subscribe channel to listen for the messages.
@@ -108,8 +108,62 @@ METHOD
             messages => ['message3', 'message4']
         });
 
-    Note if you need callback, please pass it when do ->new with
+    Note if you need shared callback, please pass it when do ->new with
     publish_callback.
+
+    new Parameters specifically for Publish V2 ONLY
+
+    *   ortt - Origination TimeToken where "r" = DOMAIN and "t" = TIMETOKEN
+
+    *   meta - any JSON payload - intended as a safe and unencrypted payload
+
+    *   ear - Eat At Read (read once)
+
+    *   seqn - Sequence Number - for Guaranteed Delivery/Ordering
+
+    We'll first try to read from messages, if not specified, fall back to
+    the same level as messages. eg:
+
+        $pubnub->publish({
+            messages => [
+                {
+                    message => 'test message.',
+                    ortt => {
+                        "r" => 13,
+                        "t" => "13978641831137500"
+                    },
+                    meta => {
+                        "stuff" => []
+                    },
+                    ear  => 'True',
+                    seqn => 12345,
+                },
+                {
+                    ...
+                }
+            ]
+        });
+
+        ## if you have common part, you can specified as the same level as messages
+        $pubnub->publish({
+            messages => [
+                {
+                    message => 'test message.',
+                    ortt => {
+                        "r" => 13,
+                        "t" => "13978641831137500"
+                    },
+                    seqn => 12345,
+                },
+                {
+                    ...
+                }
+            ],
+            meta => {
+                "stuff" => []
+            },
+            ear  => 'True',
+        });
 
   history
     fetches historical messages of a channel
@@ -144,6 +198,8 @@ METHOD
         Time token delimiting the end of time slice (inclusive) to pull
         messages from.
 
+    Sample code:
+
         my $history = $pubnub->history({
             count => 20,
             reverse => "false"
@@ -164,6 +220,9 @@ METHOD
                 start => $history->[2]
             });
         }
+
+GITHUB
+    <https://github.com/binary-com/perl-pubnub-pubsub>
 
 AUTHOR
     Binary.com <fayland@gmail.com>
