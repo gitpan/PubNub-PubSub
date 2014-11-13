@@ -3,11 +3,12 @@ abstract: 'Perl library for rapid publishing of messages on PubNub.com'
 author:
   - 'Binary.com <fayland@gmail.com>'
 build_requires:
+  ExtUtils::MakeMaker: '0'
   Test::More: '0.96'
 configure_requires:
   ExtUtils::MakeMaker: '0'
-dynamic_config: 0
-generated_by: 'Dist::Milla version v1.0.8, Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.142690'
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.98, CPAN::Meta::Converter version 2.142690'
 license: apache
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -16,20 +17,7 @@ name: PubNub-PubSub
 no_index:
   directory:
     - t
-    - xt
     - inc
-    - share
-    - eg
-    - examples
 requires:
   Mojolicious: '5.40'
-  perl: '5.008005'
-resources:
-  bugtracker: https://github.com/binary-com/perl-pubnub-pubsub/issues
-  homepage: https://github.com/binary-com/perl-pubnub-pubsub
-  repository: https://github.com/binary-com/perl-pubnub-pubsub.git
-version: '0.08'
-x_contributors:
-  - 'Fayland Lam <fayland@gmail.com>'
-  - 'Jean-Yves Sireau <jy@binary.com>'
-  - 'Pavel Shaydo <pavel@regentmarkets.com>'
+version: '0.09'
