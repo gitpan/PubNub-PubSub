@@ -4,7 +4,7 @@
       "Binary.com <fayland@gmail.com>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "ExtUtils::MakeMaker version 6.98, CPAN::Meta::Converter version 2.142690",
+   "generated_by" : "ExtUtils::MakeMaker version 7, CPAN::Meta::Converter version 2.142690",
    "license" : [
       "apache_2_0"
    ],
@@ -38,5 +38,5 @@
       }
    },
    "release_status" : "stable",
-   "version" : "0.09"
+   "version" : "v1.0.0"
 }
